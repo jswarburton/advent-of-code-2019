@@ -1,4 +1,4 @@
-package com.warburtonj.adventofcode
+package com.jswarburton.adventofcode
 
 object Tester {
 
