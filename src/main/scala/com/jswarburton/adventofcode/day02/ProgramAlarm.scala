@@ -9,7 +9,13 @@ import scala.io.Source
 object ProgramAlarm {
   def puzzle1(filePath: String): Int = {
     val data = read(filePath)
-    val updated = data.toIndexedSeq.updated(1, 12).updated(2, 2).toList
+
+    val updates = List((1, 12), (2, 2))
+
+    val updated = updates.foldLeft(data.toIndexedSeq) {
+      case (acc, (i, newValue)) => acc.updated(i, newValue)
+    }.toList
+
     run(updated).head
   }
 

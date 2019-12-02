@@ -9,7 +9,7 @@ class ProgramAlarmTest extends AnyFlatSpec with Matchers {
   behavior of "Program Alarm"
 
   it should "produce correct result for puzzle 1" in {
-    val filePath = "src/main/resources/day02/puzzle1-input.txt"
+    val filePath = "src/main/resources/day02/puzzle1and2-input.txt"
 
     puzzle1(filePath) shouldBe 3895705
   }
