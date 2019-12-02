@@ -1,6 +1,6 @@
 package com.jswarburton.adventofcode.day02
 
-import com.jswarburton.adventofcode.day02.ProgramAlarm.puzzle1
+import com.jswarburton.adventofcode.day02.ProgramAlarm.{puzzle1, puzzle2}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -8,9 +8,9 @@ class ProgramAlarmTest extends AnyFlatSpec with Matchers {
 
   behavior of "Program Alarm"
 
-  it should "produce correct result for puzzle 1" in {
-    val filePath = "src/main/resources/day02/puzzle1and2-input.txt"
+  private val filePath = "src/main/resources/day02/puzzle1and2-input.txt"
 
+  it should "produce correct result for puzzle 1" in {
     puzzle1(filePath) shouldBe 3895705
   }
 
@@ -20,6 +20,10 @@ class ProgramAlarmTest extends AnyFlatSpec with Matchers {
     ProgramAlarm.run(List(2, 3, 0, 3, 99)) shouldBe List(2, 3, 0, 6, 99)
     ProgramAlarm.run(List(2, 4, 4, 5, 99, 0)) shouldBe List(2, 4, 4, 5, 99, 9801)
     ProgramAlarm.run(List(1, 1, 1, 4, 99, 5, 6, 0, 99)) shouldBe List(30, 1, 1, 4, 2, 5, 6, 0, 99)
+  }
+
+  it should "produce correct result for puzzle 2" in {
+    puzzle2(filePath, target=19690720) shouldBe 6417
   }
 
 

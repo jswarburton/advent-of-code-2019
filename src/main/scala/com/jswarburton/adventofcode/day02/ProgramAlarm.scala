@@ -9,15 +9,11 @@ import scala.io.Source
 object ProgramAlarm {
   def puzzle1(filePath: String): Int = {
     val data = read(filePath)
-
-    val updates = List((1, 12), (2, 2))
-
-    val updated = updates.foldLeft(data.toIndexedSeq) {
-      case (acc, (i, newValue)) => acc.updated(i, newValue)
-    }.toList
-
-    run(updated).head
+    run(data, noun = 12, verb = 2).head
   }
+
+  def run(data: List[Int], noun: Int, verb: Int): List[Int] =
+    run(data.updated(1, noun).updated(2, verb))
 
   def run(data: List[Int]): List[Int] = {
     def calculateNewIndexAndValue(seq: IndexedSeq[Int],
@@ -58,4 +54,17 @@ object ProgramAlarm {
   def read(filePath: String): List[Int] = Source.fromFile(filePath).getLines.toList.head.split(",")
     .map(_.toInt)
     .toList
+
+  def puzzle2(filePath: String, target: Int): Int = {
+    val data = read(filePath)
+
+    // Brute force it!
+    val (targetNoun, targetVerb) = (for {
+      noun <- 0 to 99
+      verb <- 0 to 99
+      if run(data, noun = noun, verb = verb).head == target
+    } yield (noun, verb)).head
+
+    (100 * targetNoun) + targetVerb
+  }
 }
