@@ -5,6 +5,16 @@ import scala.io.Source
 
 case class DirectionAndDistance(direction: Char, distance: Int)
 
+case class Point(x: Int, y: Int) {
+  def left(distance: Int = 1): Point = copy(x = x - distance)
+
+  def right(distance: Int = 1): Point = copy(x = x + distance)
+
+  def up(distance: Int = 1): Point = copy(y = y + distance)
+
+  def down(distance: Int = 1): Point = copy(y = y - distance)
+}
+
 object CrossedWires {
 
   def puzzle1(filePath: String): Int = {
@@ -26,36 +36,25 @@ object CrossedWires {
                                              wire2Path: List[DirectionAndDistance]): Int = {
     @tailrec
     def genSeenPoints(remainingDirections: List[DirectionAndDistance],
-                      currentPoint: (Int, Int) = (0, 0),
-                      seenPoints: Set[(Int, Int)] = Set()): Set[(Int, Int)] = {
+                      currentPoint: Point = Point(0, 0),
+                      seenPoints: Set[Point] = Set()): Set[Point] = {
 
       remainingDirections match {
         case Nil => seenPoints
         case dirs => {
           val nextDir = dirs.head
 
+          val distance = nextDir.distance
+
           val (newSeenPoints, newCurrentPoint) =
             nextDir.direction match {
-              case 'U' =>
-                ((1 to nextDir.distance).foldLeft(Set[(Int, Int)]()) {
-                  (a, b) => a + ((currentPoint._1, currentPoint._2 + b))
-                }, (currentPoint._1, currentPoint._2 + nextDir.distance))
+              case 'U' => ((1 to distance).toSet.map(currentPoint.up), currentPoint.up(distance))
 
-              case 'D' =>
-                ((1 to nextDir.distance).foldLeft(Set[(Int, Int)]()) {
-                  (a, b) => a + ((currentPoint._1, currentPoint._2 - b))
-                }, (currentPoint._1, currentPoint._2 - nextDir.distance))
+              case 'D' => ((1 to distance).toSet.map(currentPoint.down), currentPoint.down(distance))
 
-              case 'L' =>
-                ((1 to nextDir.distance).foldLeft(Set[(Int, Int)]()) {
-                  (a, b) => a + ((currentPoint._1 - b, currentPoint._2))
-                }, (currentPoint._1 - nextDir.distance, currentPoint._2))
+              case 'L' => ((1 to distance).toSet.map(currentPoint.left), currentPoint.left(distance))
 
-              case 'R' =>
-                ((1 to nextDir.distance).foldLeft(Set[(Int, Int)]()) {
-                  (a, b) => a + ((currentPoint._1 + b, currentPoint._2))
-                }, (currentPoint._1 + nextDir.distance, currentPoint._2))
-
+              case 'R' => ((1 to distance).toSet.map(currentPoint.right), currentPoint.right(distance))
             }
 
           genSeenPoints(remainingDirections.tail, newCurrentPoint, seenPoints ++ newSeenPoints)
@@ -68,7 +67,7 @@ object CrossedWires {
 
     val intersections = seenPoints1.intersect(seenPoints2)
 
-    val manhattanDistances = intersections.toList.map { case (x, y) => Math.abs(x) + Math.abs(y) }
+    val manhattanDistances = intersections.toList.map { case Point(x, y) => Math.abs(x) + Math.abs(y) }
 
     manhattanDistances.min
   }
