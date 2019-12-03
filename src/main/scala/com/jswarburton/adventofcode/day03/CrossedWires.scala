@@ -6,13 +6,13 @@ import scala.io.Source
 case class DirectionAndDistance(direction: Char, distance: Int)
 
 case class Point(x: Int, y: Int) {
-  def left(distance: Int = 1): Point = copy(x = x - distance)
+  def left(distance: Int): Point = copy(x = x - distance)
 
-  def right(distance: Int = 1): Point = copy(x = x + distance)
+  def right(distance: Int): Point = copy(x = x + distance)
 
-  def up(distance: Int = 1): Point = copy(y = y + distance)
+  def up(distance: Int): Point = copy(y = y + distance)
 
-  def down(distance: Int = 1): Point = copy(y = y - distance)
+  def down(distance: Int): Point = copy(y = y - distance)
 }
 
 object CrossedWires {
