@@ -1,7 +1,6 @@
 package com.jswarburton.adventofcode.day04
 
-import com.jswarburton.adventofcode.day04.SecureContainer.{digitsAreIncreasing,
-  twoAdjacentDigitsAreSame, onlyTwoAdjacentDigitsAreSame, puzzle1, puzzle2}
+import com.jswarburton.adventofcode.day04.SecureContainer._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -9,10 +8,11 @@ class SecureContainerTest extends AnyFlatSpec with Matchers {
 
   behavior of "SecureContainer"
 
-  it should "check whether digits in int are always increasing" in {
-    digitsAreIncreasing(111111) shouldBe true
-    digitsAreIncreasing(12345) shouldBe true
-    digitsAreIncreasing(223450) shouldBe false
+  it should "check whether digits in int are always increasing and provide next possible candidate" in {
+    digitsAreIncreasingAndNextCandidate(111111) shouldBe(true, 111112)
+    digitsAreIncreasingAndNextCandidate(12345) shouldBe(true, 12346)
+    digitsAreIncreasingAndNextCandidate(223450) shouldBe(false, 223455)
+    digitsAreIncreasingAndNextCandidate(230123407) shouldBe(false, 233333333)
   }
 
   it should "check whether two adjacent digits in int are the same" in {
