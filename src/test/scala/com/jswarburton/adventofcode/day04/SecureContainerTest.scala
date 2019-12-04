@@ -35,7 +35,7 @@ class SecureContainerTest extends AnyFlatSpec with Matchers {
   }
 
   it should "produce the correct answer for puzzle 2" in {
-    puzzle2(152085, 670283) shouldBe 1764
+    puzzle2(152085, 670283) shouldBe 1196
   }
 
 }
