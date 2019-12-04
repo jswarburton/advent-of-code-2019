@@ -58,7 +58,7 @@ object CrossedWires {
 
     val intersections = seenPoints1.intersect(seenPoints2)
 
-    val manhattanDistances = intersections.toList.map { case Point(x, y) => Math.abs(x) + Math.abs(y) }
+    val manhattanDistances = intersections.toList.map { case Point(x, y) => x.abs + y.abs }
 
     manhattanDistances.min
   }
@@ -71,9 +71,7 @@ object CrossedWires {
 
     remainingDirections match {
       case Nil => seenPointsAndLengths
-      case dirs => {
-        val nextDir = dirs.head
-
+      case nextDir :: remainingDirs => {
         val distance = nextDir.distance
 
         val (newSeenPointsAndLengths, newCurrentPoint) =
@@ -97,7 +95,7 @@ object CrossedWires {
             else acc + ((point, distance))
         }
 
-        genSeenPointsAndWireLength(remainingDirections.tail,
+        genSeenPointsAndWireLength(remainingDirs,
           newCurrentPoint,
           currentLength + distance,
           allSeenAndLengths)
