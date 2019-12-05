@@ -27,16 +27,12 @@ object SunnyWithAChanceOfAsteroids {
 
       val (opCode, mode1, mode2, _) = parseOpCodeAndModes(latest(pointer))
 
-      def instruction(i: Int): Int = latest(pointer + i)
-
-      def param(i: Int): Int = instruction(i + 1)
-
       def read(mode: ParameterMode, i: Int): Int = mode match {
-        case PositionMode => latest(param(i))
-        case ImmediateMode => param(i)
+        case PositionMode => latest(latest(pointer + i + 1))
+        case ImmediateMode => latest(pointer + i + 1)
       }
 
-      def write(i: Int, value: Int): IndexedSeq[Int] = latest.updated(param(i), value)
+      def write(i: Int, value: Int): IndexedSeq[Int] = latest.updated(latest(pointer + i + 1), value)
 
       opCode match {
         // Add
