@@ -16,7 +16,7 @@ object ProgramAlarm {
     run(data.updated(1, noun).updated(2, verb))
 
   def run(data: List[Int]): List[Int] = {
-    def calculateNewIndexAndValue(seq: IndexedSeq[Int],
+    def calculateNewIndexAndValue(seq: Vector[Int],
                                   i: Int,
                                   op: (Int, Int) => Int): (Int, Int) = {
       val firstIndex = seq(i + 1)
@@ -31,7 +31,7 @@ object ProgramAlarm {
     }
 
     @tailrec
-    def helper(latest: IndexedSeq[Int], nextIndex: Int): IndexedSeq[Int] = {
+    def helper(latest: Vector[Int], nextIndex: Int): Vector[Int] = {
       if (nextIndex > latest.size) latest
       else {
         latest(nextIndex) match {
@@ -48,7 +48,7 @@ object ProgramAlarm {
       }
     }
 
-    helper(data.toIndexedSeq, 0).toList
+    helper(data.toVector, 0).toList
   }
 
   def read(filePath: String): List[Int] = Source.fromFile(filePath).getLines.toList.head.split(",")

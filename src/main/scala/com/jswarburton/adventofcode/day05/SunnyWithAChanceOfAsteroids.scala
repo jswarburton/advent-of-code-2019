@@ -20,7 +20,7 @@ object SunnyWithAChanceOfAsteroids {
 
   def run(data: List[Int], inputInstruction: Int): List[Int] = {
     @tailrec
-    def helper(latest: IndexedSeq[Int],
+    def helper(latest: Vector[Int],
                inputInstructions: List[Int],
                outputs: List[Int] = List(),
                pointer: Int = 0): List[Int] = {
@@ -32,7 +32,7 @@ object SunnyWithAChanceOfAsteroids {
         case ImmediateMode => latest(pointer + i + 1)
       }
 
-      def write(i: Int, value: Int): IndexedSeq[Int] = latest.updated(latest(pointer + i + 1), value)
+      def write(i: Int, value: Int): Vector[Int] = latest.updated(latest(pointer + i + 1), value)
 
       opCode match {
         // Add
@@ -49,7 +49,7 @@ object SunnyWithAChanceOfAsteroids {
 
         // Opcode 3 takes a single integer as input and saves it to the position given by its only parameter.
         // For example, the instruction 3,50 would take an input value and store it at address 50.
-        case 3 => // input
+        case 3 =>
           val input :: newInputs = inputInstructions
           val newMemory = write(0, input)
           helper(latest = newMemory, pointer = pointer + 2, inputInstructions = newInputs, outputs = outputs)
@@ -87,7 +87,7 @@ object SunnyWithAChanceOfAsteroids {
       }
     }
 
-    helper(data.toIndexedSeq, List(inputInstruction))
+    helper(data.toVector, List(inputInstruction))
   }
 
   def parseOpCodeAndModes(value: Int): (Int, ParameterMode, ParameterMode, ParameterMode) = {
