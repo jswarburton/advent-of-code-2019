@@ -1,6 +1,7 @@
 package com.jswarburton.adventofcode.day06
 
 import scala.annotation.tailrec
+import scala.collection.mutable
 import scala.io.Source
 
 case class Orbit(orbiter: String, orbitee: String)
@@ -16,17 +17,11 @@ object UniversalOrbitMap {
 
     val centroids = orbitees.filter(!orbiters.contains(_))
 
-    var memo: Map[String, Int] = Map()
+    val memo: mutable.HashMap[String, Int] = new mutable.HashMap()
 
-    def findNumOrbits(orbiter: String): Int = {
+    def findNumOrbits(orbiter: String): Int =
       if (centroids.contains(orbiter)) 0
-      else if (memo.contains(orbiter)) memo(orbiter)
-      else {
-        val res = 1 + findNumOrbits(orbiterToOrbitee(orbiter))
-        memo = memo + (orbiter -> res)
-        res
-      }
-    }
+      else memo.getOrElseUpdate(orbiter, 1 + findNumOrbits(orbiterToOrbitee(orbiter)))
 
     @tailrec
     def findTotalNumOrbits(remainingOrbiters: Set[String],
