@@ -14,21 +14,44 @@ class UniversalOrbitMapTest extends AnyFlatSpec with Matchers {
     puzzle1(filePath) shouldBe 333679
   }
 
+  it should "produce correct result for puzzle 2" in {
+    puzzle2(filePath) shouldBe 370
+  }
+
   it should "produce correct total number of orbits" in {
     val orbits = List(
       Orbit("B", "COM"),
-      Orbit("C","B"),
-      Orbit("D","C"),
-      Orbit("E","D"),
-      Orbit("F","E"),
-      Orbit("G","B"),
-      Orbit("H","G"),
-      Orbit("I","D"),
-      Orbit("J","E"),
-      Orbit("K","J"),
-      Orbit("L","K"))
+      Orbit("C", "B"),
+      Orbit("D", "C"),
+      Orbit("E", "D"),
+      Orbit("F", "E"),
+      Orbit("G", "B"),
+      Orbit("H", "G"),
+      Orbit("I", "D"),
+      Orbit("J", "E"),
+      Orbit("K", "J"),
+      Orbit("L", "K"))
 
     totalNumOrbits(orbits) shouldBe 42
+  }
+
+  it should "produce correct min orbital transfers to Santa" in {
+    val orbits = List(
+      Orbit("B", "COM"),
+      Orbit("C", "B"),
+      Orbit("D", "C"),
+      Orbit("E", "D"),
+      Orbit("F", "E"),
+      Orbit("G", "B"),
+      Orbit("H", "G"),
+      Orbit("I", "D"),
+      Orbit("J", "E"),
+      Orbit("K", "J"),
+      Orbit("L", "K"),
+      Orbit("YOU", "K"),
+      Orbit("SAN", "I"))
+
+    minOrbitalTransfersToSanta(orbits) shouldBe 4
   }
 
 }

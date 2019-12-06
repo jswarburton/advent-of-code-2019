@@ -42,8 +42,34 @@ object UniversalOrbitMap {
     findTotalNumOrbits(orbiters)
   }
 
+  def puzzle2(filePath: String): Int = minOrbitalTransfersToSanta(read(filePath))
+
   def read(filePath: String): List[Orbit] =
     Source.fromFile(filePath).getLines.toList
       .map(line => line.split("\\)"))
       .map(splits => Orbit(splits.tail.head, splits.head))
+
+  def minOrbitalTransfersToSanta(orbits: List[Orbit]): Int = {
+    val you = "YOU"
+    val santa = "SAN"
+    val centroid = "COM"
+
+    val orbiterToOrbitee = orbits.map(orbit => orbit.orbiter -> orbit.orbitee).toMap
+
+    @tailrec
+    def pathToCentroid(orbiter: String, path: List[String] = List()): List[String] =
+      if (orbiter == centroid) path
+      else pathToCentroid(orbiterToOrbitee(orbiter), orbiter :: path)
+
+    val youPathToCentroid = pathToCentroid(you)
+    val santaPathToCentroid = pathToCentroid(santa)
+
+    def findNumNonIntersections(path1: List[String], path2: List[String]): Int = {
+      val numIntersects = path1.toSet.intersect(path2.toSet).size
+
+      (path1.size - 1 - numIntersects) + (path2.size - 1 - numIntersects)
+    }
+
+    findNumNonIntersections(youPathToCentroid, santaPathToCentroid)
+  }
 }
