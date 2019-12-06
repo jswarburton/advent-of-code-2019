@@ -16,12 +16,30 @@ object UniversalOrbitMap {
 
     val centroids = orbitees.filter(!orbiters.contains(_))
 
-    @tailrec
-    def findNumOrbits(orbiter: String, count: Int = 0): Int =
-      if (centroids.contains(orbiter)) count
-      else findNumOrbits(orbiterToOrbitee(orbiter), count + 1)
+    var memo: Map[String, Int] = Map()
 
-    orbiters.toList.map(findNumOrbits(_)).sum
+    def findNumOrbits(orbiter: String): Int = {
+      if (centroids.contains(orbiter)) 0
+      else if (memo.contains(orbiter)) memo(orbiter)
+      else {
+        val res = 1 + findNumOrbits(orbiterToOrbitee(orbiter))
+        memo = memo + (orbiter -> res)
+        res
+      }
+    }
+
+    @tailrec
+    def findTotalNumOrbits(remainingOrbiters: Set[String],
+                           count: Int = 0): Int = {
+      if (remainingOrbiters.isEmpty) count
+      else {
+        val newOrbiter = remainingOrbiters.head
+        val numOrbits = findNumOrbits(newOrbiter)
+        findTotalNumOrbits(remainingOrbiters.tail, count + numOrbits)
+      }
+    }
+
+    findTotalNumOrbits(orbiters)
   }
 
   def read(filePath: String): List[Orbit] =
