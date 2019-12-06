@@ -42,12 +42,12 @@ object UniversalOrbitMap {
     findTotalNumOrbits(orbiters)
   }
 
-  def puzzle2(filePath: String): Int = minOrbitalTransfersToSanta(read(filePath))
-
   def read(filePath: String): List[Orbit] =
     Source.fromFile(filePath).getLines.toList
       .map(line => line.split("\\)"))
       .map(splits => Orbit(splits.tail.head, splits.head))
+
+  def puzzle2(filePath: String): Int = minOrbitalTransfersToSanta(read(filePath))
 
   def minOrbitalTransfersToSanta(orbits: List[Orbit]): Int = {
     val you = "YOU"
@@ -65,9 +65,19 @@ object UniversalOrbitMap {
     val santaPathToCentroid = pathToCentroid(santa)
 
     def findNumNonIntersections(path1: List[String], path2: List[String]): Int = {
-      val numIntersects = path1.toSet.intersect(path2.toSet).size
+      @tailrec
+      def findDivergence(rem1: List[String], rem2: List[String]): (List[String], List[String]) =
+        (rem1, rem2) match {
+          case (Nil, Nil) => (Nil, Nil)
+          case (Nil, something) => (Nil, something)
+          case (something, Nil) => (something, Nil)
+          case (head1 :: tail1, head2 :: tail2) if head1 == head2 => findDivergence(tail1, tail2)
+          case (some1, some2) => (some1, some2)
+        }
 
-      (path1.size - 1 - numIntersects) + (path2.size - 1 - numIntersects)
+      val (div1, div2) = findDivergence(path1, path2)
+
+      (div1.size - 1) + (div2.size - 1)
     }
 
     findNumNonIntersections(youPathToCentroid, santaPathToCentroid)
