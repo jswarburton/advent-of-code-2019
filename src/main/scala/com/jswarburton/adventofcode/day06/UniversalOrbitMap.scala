@@ -59,11 +59,8 @@ object UniversalOrbitMap {
     @tailrec
     def findDivergentPaths(rem1: List[String], rem2: List[String]): (List[String], List[String]) =
       (rem1, rem2) match {
-        case (Nil, Nil) => (Nil, Nil)
-        case (Nil, something) => (Nil, something)
-        case (something, Nil) => (something, Nil)
         case (head1 :: tail1, head2 :: tail2) if head1 == head2 => findDivergentPaths(tail1, tail2)
-        case (some1, some2) => (some1, some2)
+        case _ => (rem1, rem2)
       }
 
     val (div1, div2) = findDivergentPaths(pathToCentroid(you), pathToCentroid(santa))
