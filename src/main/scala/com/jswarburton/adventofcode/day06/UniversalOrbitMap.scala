@@ -7,6 +7,10 @@ import scala.io.Source
 case class Orbit(orbiter: String, orbitee: String)
 
 object UniversalOrbitMap {
+  private val you = "YOU"
+  private val santa = "SAN"
+  private val centroid = "COM"
+
   def puzzle1(filePath: String): Int = totalNumOrbits(read(filePath))
 
   def totalNumOrbits(orbits: List[Orbit]): Int = {
@@ -45,10 +49,6 @@ object UniversalOrbitMap {
   def puzzle2(filePath: String): Int = minOrbitalTransfersToSanta(read(filePath))
 
   def minOrbitalTransfersToSanta(orbits: List[Orbit]): Int = {
-    val you = "YOU"
-    val santa = "SAN"
-    val centroid = "COM"
-
     val orbiterToOrbitee = orbits.map(orbit => orbit.orbiter -> orbit.orbitee).toMap
 
     @tailrec
@@ -56,25 +56,18 @@ object UniversalOrbitMap {
       if (orbiter == centroid) path
       else pathToCentroid(orbiterToOrbitee(orbiter), orbiter :: path)
 
-    val youPathToCentroid = pathToCentroid(you)
-    val santaPathToCentroid = pathToCentroid(santa)
+    @tailrec
+    def findDivergentPaths(rem1: List[String], rem2: List[String]): (List[String], List[String]) =
+      (rem1, rem2) match {
+        case (Nil, Nil) => (Nil, Nil)
+        case (Nil, something) => (Nil, something)
+        case (something, Nil) => (something, Nil)
+        case (head1 :: tail1, head2 :: tail2) if head1 == head2 => findDivergentPaths(tail1, tail2)
+        case (some1, some2) => (some1, some2)
+      }
 
-    def findNumNonIntersections(path1: List[String], path2: List[String]): Int = {
-      @tailrec
-      def findDivergence(rem1: List[String], rem2: List[String]): (List[String], List[String]) =
-        (rem1, rem2) match {
-          case (Nil, Nil) => (Nil, Nil)
-          case (Nil, something) => (Nil, something)
-          case (something, Nil) => (something, Nil)
-          case (head1 :: tail1, head2 :: tail2) if head1 == head2 => findDivergence(tail1, tail2)
-          case (some1, some2) => (some1, some2)
-        }
+    val (div1, div2) = findDivergentPaths(pathToCentroid(you), pathToCentroid(santa))
 
-      val (div1, div2) = findDivergence(path1, path2)
-
-      (div1.size - 1) + (div2.size - 1)
-    }
-
-    findNumNonIntersections(youPathToCentroid, santaPathToCentroid)
+    (div1.size - 1) + (div2.size - 1)
   }
 }
