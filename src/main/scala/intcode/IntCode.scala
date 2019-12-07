@@ -7,7 +7,7 @@ import scala.annotation.tailrec
 
 object IntCode {
 
-  def runIntCode(data: List[Int], inputInstruction: Int): List[Int] = {
+  def runIntCode(data: List[Int], inputInstructions: List[Int]): List[Int] = {
     @tailrec
     def helper(latest: Vector[Int],
                inputInstructions: List[Int],
@@ -76,6 +76,6 @@ object IntCode {
       }
     }
 
-    helper(data.toVector, List(inputInstruction))
+    helper(data.toVector, inputInstructions)
   }
 }

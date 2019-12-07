@@ -36,5 +36,5 @@ object SunnyWithAChanceOfAsteroids {
       .map(_.toInt)
       .toList
 
-  def run(data: List[Int], inputInstruction: Int): List[Int] = IntCode.runIntCode(data, inputInstruction)
+  def run(data: List[Int], inputInstruction: Int): List[Int] = IntCode.runIntCode(data, List(inputInstruction))
 }
