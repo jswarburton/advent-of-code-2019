@@ -1,6 +1,5 @@
 package com.jswarburton.adventofcode.day08
 
-import scala.annotation.tailrec
 import scala.io.Source
 
 object SpaceImageFormat {
@@ -18,18 +17,8 @@ object SpaceImageFormat {
   def read(filePath: String): List[Int] = Source.fromFile(filePath).getLines.toList.head.grouped(1).toList.map(_.toInt)
 
   def getTopVisibleLayer(layers: List[List[Int]]): List[Int] = {
-    @tailrec
-    def rec(remainingLayers: List[List[Int]], topVisibleLayer: List[Int] = List()): List[Int] = {
-      if (remainingLayers.head.isEmpty) topVisibleLayer.reverse
-      else {
-        val heads = remainingLayers.map(_.head)
-        val newElement = heads.find(i => i == 0 || i == 1).get
-
-        rec(remainingLayers.map(_.tail), newElement :: topVisibleLayer)
-      }
-    }
-
-    rec(layers)
+    val transposed = layers.transpose
+    transposed.map(_.find(_ != 2).get)
   }
 
   def printLayer(layer: List[Int], width: Int): Unit = {
