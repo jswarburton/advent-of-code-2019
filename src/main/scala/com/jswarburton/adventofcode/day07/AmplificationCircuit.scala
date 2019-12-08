@@ -1,6 +1,6 @@
 package com.jswarburton.adventofcode.day07
 
-import intcode.IntCode
+import com.jswarburton.adventofcode.intcode.IntCode
 
 import scala.io.Source
 

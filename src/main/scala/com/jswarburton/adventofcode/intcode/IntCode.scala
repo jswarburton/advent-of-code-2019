@@ -1,4 +1,4 @@
-package intcode
+package com.jswarburton.adventofcode.intcode
 
 import com.jswarburton.adventofcode.day05.SunnyWithAChanceOfAsteroids.parseOpCodeAndModes
 import com.jswarburton.adventofcode.day05.{ImmediateMode, ParameterMode, PositionMode}
