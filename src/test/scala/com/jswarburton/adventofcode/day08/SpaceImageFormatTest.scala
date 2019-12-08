@@ -23,4 +23,19 @@ class SpaceImageFormatTest extends AnyFlatSpec with Matchers {
     numXByNumY(layerWithFewestZeroes, 1, 2) shouldBe 1965
   }
 
+  it should "produce the correct top visible layer" in {
+    val data = List(0, 2, 2, 2, 1, 1, 2, 2, 2, 2, 1, 2, 0, 0, 0, 0)
+    val layers = splitLayers(data, width = 2, height = 2)
+    getTopVisibleLayer(layers) shouldBe List(0, 1, 1, 0)
+  }
+
+  it should "print out the layers for puzzle 2" in {
+    val data = read(filePath)
+    val (width, height) = (25, 6)
+    val layers = splitLayers(data, width = width, height = height)
+    val topVisibleLayer = getTopVisibleLayer(layers)
+
+    printLayer(topVisibleLayer, width)
+  }
+
 }

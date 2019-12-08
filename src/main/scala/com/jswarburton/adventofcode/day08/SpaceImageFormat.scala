@@ -1,5 +1,6 @@
 package com.jswarburton.adventofcode.day08
 
+import scala.annotation.tailrec
 import scala.io.Source
 
 object SpaceImageFormat {
@@ -15,4 +16,32 @@ object SpaceImageFormat {
   def numXByNumY(layer: List[Int], x: Int, y: Int): Int = layer.count(_ == x) * layer.count(_ == y)
 
   def read(filePath: String): List[Int] = Source.fromFile(filePath).getLines.toList.head.grouped(1).toList.map(_.toInt)
+
+  def getTopVisibleLayer(layers: List[List[Int]]): List[Int] = {
+    @tailrec
+    def rec(remainingLayers: List[List[Int]], topVisibleLayer: List[Int] = List()): List[Int] = {
+      if (remainingLayers.head.isEmpty) topVisibleLayer.reverse
+      else {
+        val heads = remainingLayers.map(_.head)
+        val newElement = heads.find(i => i == 0 || i == 1).get
+
+        rec(remainingLayers.map(_.tail), newElement :: topVisibleLayer)
+      }
+    }
+
+    rec(layers)
+  }
+
+  def printLayer(layer: List[Int], width: Int): Unit = {
+    val rows = layer.grouped(width)
+
+    for (row <- rows) {
+      for (cell <- row)
+        print(cell match {
+          case 0 => '.'
+          case 1 => '#'
+        })
+      println()
+    }
+  }
 }
