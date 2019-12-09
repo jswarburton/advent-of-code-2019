@@ -1,6 +1,6 @@
 package com.jswarburton.adventofcode.day05
 
-import com.jswarburton.adventofcode.day05.SunnyWithAChanceOfAsteroids.{parseOpCodeAndModes, puzzle1, puzzle2}
+import com.jswarburton.adventofcode.day05.SunnyWithAChanceOfAsteroids.{puzzle1, puzzle2}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -9,11 +9,6 @@ class SunnyWithAChanceOfAsteroidsTest extends AnyFlatSpec with Matchers {
   private val filePath = "src/main/resources/day05/puzzle1and2-input.txt"
 
   behavior of "SunnyWithAChanceOfAsteroids"
-
-  it should "parse Op Codes and Modes" in {
-    parseOpCodeAndModes(1002) shouldBe(2, PositionMode, ImmediateMode, PositionMode)
-    parseOpCodeAndModes(10104) shouldBe(4, ImmediateMode, PositionMode, ImmediateMode)
-  }
 
   it should "produce correct result for puzzle 1" in {
     val head :: tail = puzzle1(filePath)

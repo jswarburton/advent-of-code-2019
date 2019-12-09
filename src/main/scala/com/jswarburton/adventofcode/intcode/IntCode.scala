@@ -1,12 +1,8 @@
 package com.jswarburton.adventofcode.intcode
 
-import com.jswarburton.adventofcode.day05.SunnyWithAChanceOfAsteroids.parseOpCodeAndModes
-import com.jswarburton.adventofcode.day05.{ImmediateMode, ParameterMode, PositionMode}
-
 import scala.annotation.tailrec
 
 object IntCode {
-
   def runIntCode(data: List[Int], inputInstructions: List[Int]): List[Int] = {
     @tailrec
     def helper(latest: Vector[Int],
@@ -77,5 +73,20 @@ object IntCode {
     }
 
     helper(data.toVector, inputInstructions)
+  }
+
+  def parseOpCodeAndModes(value: Int): (Int, ParameterMode, ParameterMode, ParameterMode) = {
+    val opCode = value % 100
+
+    def mapToMode(i: Int): ParameterMode = i match {
+      case 0 => PositionMode
+      case 1 => ImmediateMode
+    }
+
+    val mode1 = value / 100 % 10
+    val mode2 = value / 1000 % 10
+    val mode3 = value / 10000 % 10
+
+    (opCode, mapToMode(mode1), mapToMode(mode2), mapToMode(mode3))
   }
 }
