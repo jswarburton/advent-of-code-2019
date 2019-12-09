@@ -6,14 +6,14 @@ import scala.io.Source
 
 object SunnyWithAChanceOfAsteroids {
 
-  def puzzle1(filePath: String): List[Int] = run(read(filePath), inputInstruction = 1)
+  def puzzle1(filePath: String): List[Long] = run(read(filePath), inputInstruction = 1)
 
-  def puzzle2(filePath: String): List[Int] = run(read(filePath), inputInstruction = 5)
+  def puzzle2(filePath: String): List[Long] = run(read(filePath), inputInstruction = 5)
 
-  def read(filePath: String): List[Int] =
+  def read(filePath: String): List[Long] =
     Source.fromFile(filePath).getLines.toList.head.split(",")
-      .map(_.toInt)
+      .map(_.toLong)
       .toList
 
-  def run(data: List[Int], inputInstruction: Int): List[Int] = IntCode.runIntCode(data, List(inputInstruction))
+  def run(data: List[Long], inputInstruction: Long): List[Long] = IntCode.runIntCode(data, List(inputInstruction))
 }

@@ -11,11 +11,12 @@ class SunnyWithAChanceOfAsteroidsTest extends AnyFlatSpec with Matchers {
   behavior of "SunnyWithAChanceOfAsteroids"
 
   it should "produce correct result for puzzle 1" in {
-    val head :: tail = puzzle1(filePath)
+    val result = puzzle1(filePath)
 
-    head shouldBe 13787043
-    tail.forall(_ == 0) shouldBe true
+    result.last shouldBe 13787043
+    result.dropRight(1).forall(_ == 0) shouldBe true
   }
+
   it should "produce correct result for puzzle 2" in {
     val head :: tail = puzzle2(filePath)
 
@@ -24,27 +25,27 @@ class SunnyWithAChanceOfAsteroidsTest extends AnyFlatSpec with Matchers {
   }
 
   it should "produce correct results for examples given" in {
-    val positionModeEqualTo8 = List(3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8)
+    val positionModeEqualTo8 = List[Long](3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8)
     evaluate(positionModeEqualTo8, inputInstruction = 8, expectedHead = 1)
     evaluate(positionModeEqualTo8, inputInstruction = 6, expectedHead = 0)
 
-    val positionModeLessThan8 = List(3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8)
+    val positionModeLessThan8 = List[Long](3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8)
     evaluate(positionModeLessThan8, inputInstruction = 8, expectedHead = 0)
     evaluate(positionModeLessThan8, inputInstruction = 9, expectedHead = 0)
     evaluate(positionModeLessThan8, inputInstruction = 7, expectedHead = 1)
 
-    val immediateModeEqualTo8 = List(3, 3, 1108, -1, 8, 3, 4, 3, 99)
+    val immediateModeEqualTo8 = List[Long](3, 3, 1108, -1, 8, 3, 4, 3, 99)
     evaluate(immediateModeEqualTo8, inputInstruction = 8, expectedHead = 1)
     evaluate(immediateModeEqualTo8, inputInstruction = 6, expectedHead = 0)
 
-    val immediateModeLessThan8 = List(3, 3, 1107, -1, 8, 3, 4, 3, 99)
+    val immediateModeLessThan8 = List[Long](3, 3, 1107, -1, 8, 3, 4, 3, 99)
     evaluate(immediateModeLessThan8, inputInstruction = 8, expectedHead = 0)
     evaluate(immediateModeLessThan8, inputInstruction = 9, expectedHead = 0)
     evaluate(immediateModeLessThan8, inputInstruction = 7, expectedHead = 1)
   }
 
   it should "produce correct result for larger example" in {
-    val input = List(3, 21, 1008, 21, 8, 20, 1005, 20, 22, 107, 8, 21, 20, 1006, 20, 31,
+    val input = List[Long](3, 21, 1008, 21, 8, 20, 1005, 20, 22, 107, 8, 21, 20, 1006, 20, 31,
       1106, 0, 36, 98, 0, 0, 1002, 21, 125, 20, 4, 20, 1105, 1, 46, 104,
       999, 1105, 1, 46, 1101, 1000, 1, 20, 4, 20, 1105, 1, 46, 98, 99)
 
@@ -54,16 +55,16 @@ class SunnyWithAChanceOfAsteroidsTest extends AnyFlatSpec with Matchers {
   }
 
   it should "output 0 if input is zero, 1 otherwise" in {
-    val inputUsingPositionMode = List(3, 12, 6, 12, 15, 1, 13, 14, 13, 4, 13, 99, -1, 0, 1, 9)
+    val inputUsingPositionMode = List[Long](3, 12, 6, 12, 15, 1, 13, 14, 13, 4, 13, 99, -1, 0, 1, 9)
     evaluate(inputUsingPositionMode, inputInstruction = 0, expectedHead = 0)
     evaluate(inputUsingPositionMode, inputInstruction = 5, expectedHead = 1)
 
-    val inputUsingImmediateMode = List(3, 3, 1105, -1, 9, 1101, 0, 0, 12, 4, 12, 99, 1)
+    val inputUsingImmediateMode = List[Long](3, 3, 1105, -1, 9, 1101, 0, 0, 12, 4, 12, 99, 1)
     evaluate(inputUsingImmediateMode, inputInstruction = 0, expectedHead = 0)
     evaluate(inputUsingImmediateMode, inputInstruction = 5, expectedHead = 1)
   }
 
-  private def evaluate(input: List[Int], inputInstruction: Int, expectedHead: Int): Unit = {
+  private def evaluate(input: List[Long], inputInstruction: Long, expectedHead: Long): Unit = {
     val res = SunnyWithAChanceOfAsteroids.run(data = input, inputInstruction = inputInstruction)
 
     res.head shouldBe expectedHead
