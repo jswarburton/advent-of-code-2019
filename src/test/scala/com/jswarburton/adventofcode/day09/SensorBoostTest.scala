@@ -29,8 +29,12 @@ class SensorBoostTest extends AnyFlatSpec with Matchers {
     IntCode.runIntCode(program, List()) shouldBe List(inputValue)
   }
 
-  it should "produce the correct result for puzzle1" in {
+  it should "produce the correct result for puzzle 1" in {
     SensorBoost.puzzle1(filePath) shouldBe List(3512778005L)
+  }
+
+  it should "produce the correct result for puzzle 2" in {
+    SensorBoost.puzzle2(filePath) shouldBe List(35920L)
   }
 
 }
