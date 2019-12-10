@@ -6,10 +6,8 @@ import scala.io.Source
 
 object AmplificationCircuit {
   def maxThrusterSignal(program: List[Long]): Long = {
-    val phaseSequence = List(0L, 1L, 2L, 3L, 4L)
-    val permutations = phaseSequence.permutations
-
-    permutations.map(thrusterSignal(program, _)).max
+    val phaseSequences = (0L to 4L).permutations.map(_.toList)
+    phaseSequences.map(thrusterSignal(program, _)).max
   }
 
   def thrusterSignal(program: List[Long], phaseSequence: List[Long]): Long =
