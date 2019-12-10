@@ -31,8 +31,6 @@ object MonitoringStation {
 
   def findNumAsteroidsFromCoord(asteroids: Set[Coordinate], coordinate: Coordinate): Int = {
     val otherAsteroids = asteroids - coordinate
-
-    otherAsteroids.groupBy(coordinate.angleTo)
-      .size
+    otherAsteroids.map(coordinate.angleTo).size
   }
 }
