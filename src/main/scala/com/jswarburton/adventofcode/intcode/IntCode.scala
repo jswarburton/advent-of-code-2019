@@ -18,7 +18,7 @@ object IntCode {
     val initialState = State(indexToValue, inputInstructions, List(), 0, 0)
 
     @tailrec
-    def rec(state: State): List[Long] = runOne(state) match {
+    def rec(state: State): List[Long] = runUntilOutput(state) match {
       case Some(newState) => rec(newState)
       case None => state.outputs.reverse
     }
@@ -26,7 +26,17 @@ object IntCode {
     rec(initialState)
   }
 
-  def runOne(state: State): Option[State] = {
+  def runUntilOutput(data: List[Long], inputInstructions: List[Long]): Option[State] = {
+    val indexToValue = data.zipWithIndex.map { case (value, idx) => (idx, value) }.toMap
+      .withDefaultValue(0L)
+
+    val state = State(indexToValue, inputInstructions, List(), 0, 0)
+
+    runUntilOutput(state)
+  }
+
+  @tailrec
+  def runUntilOutput(state: State): Option[State] = {
 
     val latest = state.state
     val pointer = state.pointer
@@ -52,20 +62,20 @@ object IntCode {
       case 1 =>
         val newValue = read(mode1, 1) + read(mode2, 2)
         val newLatest = write(mode3, 3, newValue)
-        Some(state.copy(state = newLatest, pointer = pointer + 4))
+        runUntilOutput(state.copy(state = newLatest, pointer = pointer + 4))
 
       // Multiply
       case 2 =>
         val newValue = read(mode1, 1) * read(mode2, 2)
         val newLatest = write(mode3, 3, newValue)
-        Some(state.copy(state = newLatest, pointer = pointer + 4))
+        runUntilOutput(state.copy(state = newLatest, pointer = pointer + 4))
 
       // Opcode 3 takes a single integer as input and saves it to the position given by its only parameter.
       // For example, the instruction 3,50 would take an input value and store it at address 50.
       case 3 =>
         val input :: newInputs = state.inputInstructions
         val newLatest = write(mode1, 1, input)
-        Some(state.copy(state = newLatest, pointer = pointer + 2, inputInstructions = newInputs))
+        runUntilOutput(state.copy(state = newLatest, pointer = pointer + 2, inputInstructions = newInputs))
 
       // Opcode 4 outputs the value of its only parameter.
       // For example, the instruction 4,50 would output the value at address 50.
@@ -76,30 +86,30 @@ object IntCode {
 
       // Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
       case 5 =>
-        if (read(mode1, 1) != 0) Some(state.copy(pointer = read(mode2, 2).toInt))
-        else Some(state.copy(pointer = pointer + 3))
+        if (read(mode1, 1) != 0) runUntilOutput(state.copy(pointer = read(mode2, 2).toInt))
+        else runUntilOutput(state.copy(pointer = pointer + 3))
 
       // Opcode 6 is jump-if-false: if the first parameter is zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
       case 6 =>
-        if (read(mode1, 1) == 0) Some(state.copy(pointer = read(mode2, 2).toInt))
-        else Some(state.copy(pointer = pointer + 3))
+        if (read(mode1, 1) == 0) runUntilOutput(state.copy(pointer = read(mode2, 2).toInt))
+        else runUntilOutput(state.copy(pointer = pointer + 3))
 
       // Opcode 7 is less than: if the first parameter is less than the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
       case 7 =>
         val newValue = if (read(mode1, 1) < read(mode2, 2)) 1 else 0
         val newLatest = write(mode3, 3, newValue)
-        Some(state.copy(state = newLatest, pointer = pointer + 4))
+        runUntilOutput(state.copy(state = newLatest, pointer = pointer + 4))
 
       // Opcode 8 is equals: if the first parameter is equal to the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
       case 8 =>
         val newValue = if (read(mode1, 1) == read(mode2, 2)) 1 else 0
         val newLatest = write(mode3, 3, newValue)
-        Some(state.copy(state = newLatest, pointer = pointer + 4))
+        runUntilOutput(state.copy(state = newLatest, pointer = pointer + 4))
 
       // Opcode 9 adjusts the relative base by the value of its only parameter
       case 9 =>
         val relativeBaseAdjustment = read(mode1, 1).toInt
-        Some(state.copy(pointer = pointer + 2, relativeBase = relativeBase + relativeBaseAdjustment))
+        runUntilOutput(state.copy(pointer = pointer + 2, relativeBase = relativeBase + relativeBaseAdjustment))
 
       case 99 => None
     }
