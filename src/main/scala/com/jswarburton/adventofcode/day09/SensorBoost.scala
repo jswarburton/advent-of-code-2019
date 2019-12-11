@@ -15,6 +15,6 @@ object SensorBoost {
       .map(_.toLong)
       .toList
 
-  def runBoost(program: List[Long], input: Int): List[Long] = IntCode.runIntCode(program, List(input))
+  def runBoost(program: List[Long], input: Int): List[Long] = IntCode.runIntCode(program, input)
 
 }
