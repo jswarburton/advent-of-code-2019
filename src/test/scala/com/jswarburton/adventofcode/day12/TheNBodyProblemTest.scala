@@ -1,6 +1,7 @@
 package com.jswarburton.adventofcode.day12
 
-import com.jswarburton.adventofcode.day12.TheNBodyProblem.{calculateTotalEndEnergy, read}
+import com.jswarburton.adventofcode.day12.TheNBodyProblem.{numIterationsToGetBackToPrevious,
+  read, totalEndEnergy, lowestCommonMultiple}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -34,13 +35,43 @@ class TheNBodyProblemTest extends AnyFlatSpec with Matchers {
       Position(x = 2, y = -7, z = 3),
       Position(x = 9, y = -8, z = -3))
 
-    calculateTotalEndEnergy(startingPositions, numIterations = 100) shouldBe 1940
+    totalEndEnergy(startingPositions, numIterations = 100) shouldBe 1940
   }
 
   it should "produce correct solution for puzzle 1" in {
     val startingPositions = read(filePath)
 
-    calculateTotalEndEnergy(startingPositions, numIterations = 1000) shouldBe 14809
+    totalEndEnergy(startingPositions, numIterations = 1000) shouldBe 14809
+  }
+
+  it should "calculate the lowest common multiple" in {
+    lowestCommonMultiple(15, 20) shouldBe 60
+  }
+
+  it should "calculate the number of steps taken to get back to previously seen state 1" in {
+    val startingPositions = List(
+      Position(x = -1, y = 0, z = 2),
+      Position(x = 2, y = -10, z = -7),
+      Position(x = 4, y = -8, z = 8),
+      Position(x = 3, y = 5, z = -1))
+
+    numIterationsToGetBackToPrevious(startingPositions) shouldBe 2772
+  }
+
+  it should "calculate the number of steps taken to get back to previously seen state 2" in {
+    val startingPositions = List(
+      Position(x = -8, y = -10, z = 0),
+      Position(x = 5, y = 5, z = 10),
+      Position(x = 2, y = -7, z = 3),
+      Position(x = 9, y = -8, z = -3))
+
+    numIterationsToGetBackToPrevious(startingPositions) shouldBe 4686774924L
+  }
+
+  it should "produce the correct solution for puzzle 2" in {
+    val startingPositions = read(filePath)
+
+    numIterationsToGetBackToPrevious(startingPositions) shouldBe 282270365571288L
   }
 
 }
