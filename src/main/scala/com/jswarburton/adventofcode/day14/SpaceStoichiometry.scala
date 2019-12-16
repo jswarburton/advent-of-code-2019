@@ -1,5 +1,6 @@
 package com.jswarburton.adventofcode.day14
 
+import scala.annotation.tailrec
 import scala.io.Source
 
 object SpaceStoichiometry {
@@ -23,10 +24,43 @@ object SpaceStoichiometry {
     }.toMap
   }
 
-  def amountOfOreNeededForFuel(reactions: Map[String, (Int, List[(String, Int)])]): Long = {
+  def maxAmountOfFuel(reactions: Map[String, (Int, List[(String, Int)])],
+                      amountOfOre: Long): Long = {
+
+    def findBinarySearchStartAndEnd: (Long, Long) = {
+      @tailrec
+      def rec(prev: Long, current: Long): (Long, Long) = {
+        val oreNeeded = amountOfOreNeededForFuel(reactions, current)
+        if (oreNeeded > amountOfOre) (prev, current)
+        else rec(current, Math.exp(current).toInt)
+      }
+
+      rec(0, 1)
+    }
+
+    val (binarySearchStart, binarySearchEnd) = findBinarySearchStartAndEnd
+
+    @tailrec
+    def binarySearch(start: Long, end: Long): Long = {
+      val mid = (start + end) / 2
+
+      if (mid == start) start
+      else {
+        val m = amountOfOreNeededForFuel(reactions, mid)
+
+        if (m > amountOfOre) binarySearch(start, mid)
+        else binarySearch(mid, end)
+      }
+    }
+
+    binarySearch(binarySearchStart, binarySearchEnd)
+  }
+
+  def amountOfOreNeededForFuel(reactions: Map[String, (Int, List[(String, Int)])],
+                               initialAmount: Long = 1): Long = {
 
     def rec(chem: String,
-            amount: Long = 1,
+            amount: Long = initialAmount,
             excess: Map[String, Long] = Map().withDefaultValue(0)): (Long, Map[String, Long]) =
       if (chem == "ORE") (amount, excess)
       else {
