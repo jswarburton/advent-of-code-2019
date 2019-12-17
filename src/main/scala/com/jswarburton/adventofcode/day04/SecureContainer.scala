@@ -21,7 +21,7 @@ object SecureContainer {
     rec(listified.head, listified.tail)
   }
 
-  private def intToDigitList(i: Int): List[Int] = i.toString.toList.map(_ - '0')
+  private def intToDigitList(i: Int): List[Int] = i.toString.toList.map(_.asDigit)
 
   private def genericPuzzle(start: Int, end: Int, f: (Int) => Boolean): Int = {
     @tailrec
