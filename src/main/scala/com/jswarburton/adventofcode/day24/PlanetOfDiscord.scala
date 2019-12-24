@@ -47,9 +47,10 @@ object PlanetOfDiscord {
     (coord, n == 1 || n == 2)
   }
 
-  def calculateBiodiversity(grid: Grid): Int = {
+  def calculateBiodiversity(grid: Grid): Long = {
+    val gridWidth = grid.keySet.maxBy(_.x).x + 1
     val bugCoords = grid.filter(_._2).keySet
 
-    bugCoords.map(c => Math.pow(2, 5 * c.y + c.x).toInt).sum
+    bugCoords.map(c => Math.pow(2, gridWidth * c.y + c.x).toLong).sum
   }
 }
