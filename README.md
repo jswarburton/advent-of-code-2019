@@ -31,7 +31,7 @@ For descriptions of the puzzles see the website.
 | 19 |  |
 | 20 |  |
 | 21 |  |
-| 22 |  |
+| 22 | :star: |
 | 23 |  |
 | 24 | :star: |
 | 25 |  |
