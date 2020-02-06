@@ -14,10 +14,10 @@ class SlamShuffleTest extends AnyFlatSpec with Matchers {
   it should "produce the correct solution for all test cases" in {
     val deck = generateFactoryOrderDeck(10)
 
-    performOperations(deck, read(testCasePath(1))) shouldBe List(0, 3, 6, 9, 2, 5, 8, 1, 4, 7)
-    performOperations(deck, read(testCasePath(2))) shouldBe List(3, 0, 7, 4, 1, 8, 5, 2, 9, 6)
-    performOperations(deck, read(testCasePath(3))) shouldBe List(6, 3, 0, 7, 4, 1, 8, 5, 2, 9)
-    performOperations(deck, read(testCasePath(4))) shouldBe List(9, 2, 5, 8, 1, 4, 7, 0, 3, 6)
+    performOperations(deck, read(testCasePath(1))) shouldBe Vector(0, 3, 6, 9, 2, 5, 8, 1, 4, 7)
+    performOperations(deck, read(testCasePath(2))) shouldBe Vector(3, 0, 7, 4, 1, 8, 5, 2, 9, 6)
+    performOperations(deck, read(testCasePath(3))) shouldBe Vector(6, 3, 0, 7, 4, 1, 8, 5, 2, 9)
+    performOperations(deck, read(testCasePath(4))) shouldBe Vector(9, 2, 5, 8, 1, 4, 7, 0, 3, 6)
   }
 
   it should "produce the correct solution for puzzle 1" in {

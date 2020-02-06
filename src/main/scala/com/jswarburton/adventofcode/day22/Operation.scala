@@ -30,7 +30,7 @@ case class DealWithIncrement(increment: Int) extends Operation {
 
     val finalMapping = rec(deck)
 
-    (0 until deck.length).map(finalMapping).toList
+    (0 until deck.length).map(finalMapping).toVector
   }
 }
 

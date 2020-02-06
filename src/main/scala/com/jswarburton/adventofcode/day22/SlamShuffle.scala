@@ -3,7 +3,7 @@ package com.jswarburton.adventofcode.day22
 import scala.io.Source
 
 object SlamShuffle {
-  type Deck = List[Int]
+  type Deck = Vector[Int]
 
   def read(filePath: String): List[Operation] = Source.fromFile(filePath).getLines.toList.map(parseOperation)
 
@@ -17,7 +17,7 @@ object SlamShuffle {
       (currentDeck, op) => op.performOp(currentDeck)
     }
 
-  def generateFactoryOrderDeck(n: Int): Deck = (0 until n).toList
+  def generateFactoryOrderDeck(n: Int): Deck = (0 until n).toVector
 }
 
 
